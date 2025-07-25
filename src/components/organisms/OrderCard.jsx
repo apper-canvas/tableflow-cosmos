@@ -41,16 +41,20 @@ const OrderCard = ({ order, onStatusUpdate }) => {
       exit={{ opacity: 0, y: -20 }}
       className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200"
     >
-      <div className="flex items-center justify-between mb-4">
+<div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-3">
-          <h3 className="text-lg font-semibold text-gray-900 font-display">
+          <span className="text-sm font-medium text-gray-600">
             {order.orderNumber}
-          </h3>
+          </span>
           <StatusBadge status={order.status} type="order" />
         </div>
-        <div className="flex items-center space-x-2 text-sm text-gray-500">
-          <ApperIcon name="MapPin" className="w-4 h-4" />
-          <span>{order.tableNumber}</span>
+        <div className="flex items-center space-x-2">
+          <div className="bg-primary/10 border border-primary/20 rounded-lg px-3 py-1.5">
+            <div className="flex items-center space-x-2">
+              <ApperIcon name="MapPin" className="w-4 h-4 text-primary" />
+              <span className="text-sm font-semibold text-primary">Table {order.tableNumber}</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -75,40 +79,47 @@ const OrderCard = ({ order, onStatusUpdate }) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col space-y-1">
-<span className="text-lg font-bold text-gray-900">
+<div className="flex items-center justify-between">
+        <div className="flex flex-col space-y-2">
+          <span className="text-lg font-bold text-gray-900">
             ${(order.total || 0).toFixed(2)}
           </span>
-          <span className="text-xs text-gray-500">
-            {formatDistanceToNow(new Date(order.timestamp), { addSuffix: true })}
-          </span>
+          <div className="flex items-center space-x-2 text-sm text-gray-600 bg-gray-50 rounded-md px-2 py-1">
+            <ApperIcon name="Clock" className="w-4 h-4" />
+            <span className="font-medium">
+              {formatDistanceToNow(new Date(order.timestamp), { addSuffix: true })}
+            </span>
+          </div>
         </div>
 
-        {statusAction && order.status !== "delivered" && (
-          <Button
-            onClick={handleStatusUpdate}
-            size="sm"
-            className="text-sm"
-          >
-            <ApperIcon name={statusAction.icon} className="w-4 h-4 mr-2" />
-            {statusAction.label}
-          </Button>
-        )}
+        <div className="flex flex-col items-end space-y-2">
+          {statusAction && order.status !== "delivered" && (
+            <Button
+              onClick={handleStatusUpdate}
+              size="sm"
+              className="text-sm px-4 py-2 font-medium"
+            >
+              <ApperIcon name={statusAction.icon} className="w-4 h-4 mr-2" />
+              {statusAction.label}
+            </Button>
+          )}
 
-        {order.status === "delivered" && (
-          <div className="flex items-center text-success text-sm font-medium">
-            <ApperIcon name="CheckCircle2" className="w-4 h-4 mr-1" />
-            Completed
-          </div>
-        )}
+          {order.status === "delivered" && (
+            <div className="flex items-center text-success text-sm font-semibold bg-success/10 rounded-md px-3 py-1.5">
+              <ApperIcon name="CheckCircle2" className="w-4 h-4 mr-2" />
+              Completed
+            </div>
+          )}
+        </div>
       </div>
 
-      {order.estimatedTime > 0 && (
-        <div className="mt-3 pt-3 border-t border-gray-100">
-          <div className="flex items-center text-sm text-accent">
-            <ApperIcon name="Clock" className="w-4 h-4 mr-2" />
-            <span>Est. {order.estimatedTime} minutes</span>
+{order.estimatedTime > 0 && (
+        <div className="mt-4 pt-3 border-t border-gray-100">
+          <div className="flex items-center justify-center bg-accent/10 border border-accent/20 rounded-lg px-4 py-2">
+            <ApperIcon name="Timer" className="w-4 h-4 mr-2 text-accent" />
+            <span className="text-sm font-semibold text-accent">
+              Estimated: {order.estimatedTime} minutes
+            </span>
           </div>
         </div>
       )}
