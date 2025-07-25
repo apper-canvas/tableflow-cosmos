@@ -45,38 +45,38 @@ const MenuItemCard = ({ item, onToggleAvailability, onEdit, onDelete }) => {
             ${item.price.toFixed(2)}
           </span>
           
-          <div className="flex flex-col gap-2">
+<div className="flex flex-col gap-2">
             <div className="flex gap-2">
               <Button
                 onClick={() => onEdit(item)}
                 variant="outline"
                 size="sm"
-                className="text-sm"
+                tooltip="Edit menu item"
+                className="text-sm p-2 h-8 w-8"
               >
-                <ApperIcon name="Edit" className="w-4 h-4 mr-1" />
-                Edit
+                <ApperIcon name="Edit" className="w-4 h-4" />
               </Button>
               <Button
                 onClick={() => onDelete(item.Id)}
                 variant="outline"
                 size="sm"
-                className="text-sm text-red-600 hover:text-red-700 hover:bg-red-50"
+                tooltip="Delete menu item"
+                className="text-sm text-red-600 hover:text-red-700 hover:bg-red-50 p-2 h-8 w-8"
               >
-                <ApperIcon name="Trash2" className="w-4 h-4 mr-1" />
-                Delete
+                <ApperIcon name="Trash2" className="w-4 h-4" />
               </Button>
             </div>
             <Button
               onClick={handleToggleAvailability}
               variant={item.available ? "outline" : "secondary"}
               size="sm"
-              className="text-sm"
+              tooltip={item.available ? "Disable menu item" : "Enable menu item"}
+              className="text-sm p-2 h-8 w-8"
             >
               <ApperIcon 
                 name={item.available ? "EyeOff" : "Eye"} 
-                className="w-4 h-4 mr-2" 
+                className="w-4 h-4" 
               />
-              {item.available ? "Disable" : "Enable"}
             </Button>
           </div>
         </div>

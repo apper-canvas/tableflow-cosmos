@@ -1,13 +1,15 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState } from "react";
 import { cn } from "@/utils/cn";
 
 const Button = forwardRef(({ 
   className, 
   variant = "primary", 
-  size = "default", 
+  size = "default",
+  tooltip,
   children, 
   ...props 
 }, ref) => {
+  const [showTooltip, setShowTooltip] = useState(false);
   const baseStyles = "inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
   
   const variants = {
@@ -24,14 +26,26 @@ const Button = forwardRef(({
     lg: "h-12 px-6 text-lg"
   };
 
-  return (
-    <button
-      className={cn(baseStyles, variants[variant], sizes[size], className)}
-      ref={ref}
-      {...props}
-    >
-      {children}
-    </button>
+return (
+    <div className="relative inline-block">
+      <button
+        className={cn(baseStyles, variants[variant], sizes[size], className)}
+        ref={ref}
+        onMouseEnter={() => tooltip && setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+        onFocus={() => tooltip && setShowTooltip(true)}
+        onBlur={() => setShowTooltip(false)}
+        {...props}
+      >
+        {children}
+      </button>
+      {tooltip && showTooltip && (
+        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded whitespace-nowrap z-50 animate-fade-in">
+          {tooltip}
+          <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+        </div>
+      )}
+    </div>
   );
 });
 
