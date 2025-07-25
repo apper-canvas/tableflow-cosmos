@@ -27,11 +27,10 @@ function App() {
           closeOnClick
           rtl={false}
           pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          toastClassName="shadow-lg"
-          style={{ zIndex: 9999 }}
+/>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
         />
       </div>
     </Router>
