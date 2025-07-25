@@ -104,26 +104,26 @@ const handleCreate = async (itemData) => {
     }
   };
 
-  const filteredItems = menuItems.filter(item => {
+const filteredItems = menuItems.filter(item => {
     const matchesSearch = 
-      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchQuery.toLowerCase());
+      item.Name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.category_c?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.description_c?.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesCategory = categoryFilter === "all" || item.category === categoryFilter;
+    const matchesCategory = categoryFilter === "all" || item.category_c === categoryFilter;
     const matchesAvailability = 
       availabilityFilter === "all" || 
-      (availabilityFilter === "available" && item.available) ||
-      (availabilityFilter === "unavailable" && !item.available);
+      (availabilityFilter === "available" && item.available_c) ||
+      (availabilityFilter === "unavailable" && !item.available_c);
     
     return matchesSearch && matchesCategory && matchesAvailability;
   });
 
-  const getAvailabilityCounts = () => {
+const getAvailabilityCounts = () => {
     return {
       all: menuItems.length,
-      available: menuItems.filter(item => item.available).length,
-      unavailable: menuItems.filter(item => !item.available).length
+      available: menuItems.filter(item => item.available_c).length,
+      unavailable: menuItems.filter(item => !item.available_c).length
     };
   };
 

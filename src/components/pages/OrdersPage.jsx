@@ -50,24 +50,24 @@ export default function OrdersPage() {
     loadOrders(); // Refresh the orders list
   };
 
-  const filteredOrders = orders.filter(order => {
+const filteredOrders = orders.filter(order => {
     const matchesSearch = 
-      order.orderNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.tableNumber.toLowerCase().includes(searchQuery.toLowerCase());
+      order.order_number_c?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order.customer_name_c?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order.table_number_c?.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesStatus = statusFilter === "all" || order.status === statusFilter;
+    const matchesStatus = statusFilter === "all" || order.status_c === statusFilter;
     
     return matchesSearch && matchesStatus;
   });
 
-  const getStatusCounts = () => {
+const getStatusCounts = () => {
     const counts = {
       all: orders.length,
-      new: orders.filter(o => o.status === "new").length,
-      preparing: orders.filter(o => o.status === "preparing").length,
-      ready: orders.filter(o => o.status === "ready").length,
-      delivered: orders.filter(o => o.status === "delivered").length
+      new: orders.filter(o => o.status_c === "new").length,
+      preparing: orders.filter(o => o.status_c === "preparing").length,
+      ready: orders.filter(o => o.status_c === "ready").length,
+      delivered: orders.filter(o => o.status_c === "delivered").length
     };
     return counts;
   };

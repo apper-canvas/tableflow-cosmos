@@ -32,7 +32,7 @@ const TablesPage = () => {
     loadTables();
   }, []);
 
-  const handleStatusUpdate = async (tableId, newStatus) => {
+const handleStatusUpdate = async (tableId, newStatus) => {
     try {
       await tableService.updateStatus(tableId, newStatus);
       setTables(prevTables =>
@@ -40,9 +40,9 @@ const TablesPage = () => {
           table.Id === tableId 
             ? { 
                 ...table, 
-                status: newStatus,
-                currentPartySize: newStatus === "available" ? 0 : table.currentPartySize,
-                reservationTime: newStatus === "available" ? null : table.reservationTime
+                status_c: newStatus,
+                current_party_size_c: newStatus === "available" ? 0 : table.current_party_size_c,
+                reservation_time_c: newStatus === "available" ? null : table.reservation_time_c
               } 
             : table
         )
@@ -63,16 +63,16 @@ const TablesPage = () => {
   };
 
   const filteredTables = tables.filter(table => {
-    return statusFilter === "all" || table.status === statusFilter;
+    return statusFilter === "all" || table.status_c === statusFilter;
   });
 
-  const getStatusCounts = () => {
+const getStatusCounts = () => {
     const counts = {
       all: tables.length,
-      available: tables.filter(t => t.status === "available").length,
-      occupied: tables.filter(t => t.status === "occupied").length,
-      reserved: tables.filter(t => t.status === "reserved").length,
-      cleaning: tables.filter(t => t.status === "cleaning").length
+      available: tables.filter(t => t.status_c === "available").length,
+      occupied: tables.filter(t => t.status_c === "occupied").length,
+      reserved: tables.filter(t => t.status_c === "reserved").length,
+      cleaning: tables.filter(t => t.status_c === "cleaning").length
     };
     return counts;
   };
@@ -87,10 +87,10 @@ const TablesPage = () => {
     { key: "cleaning", label: "Cleaning", icon: "Sparkles" }
   ];
 
-  const getTableStats = () => {
+const getTableStats = () => {
     const total = tables.length;
-    const occupied = tables.filter(t => t.status === "occupied").length;
-    const available = tables.filter(t => t.status === "available").length;
+    const occupied = tables.filter(t => t.status_c === "occupied").length;
+    const available = tables.filter(t => t.status_c === "available").length;
     const occupancyRate = total > 0 ? Math.round((occupied / total) * 100) : 0;
     
     return { total, occupied, available, occupancyRate };

@@ -1,69 +1,362 @@
-import menuData from "@/services/mockData/menuItems.json";
-
-let menuItems = [...menuData];
-
 const menuService = {
   async getAll() {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    return [...menuItems];
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "price_c" } },
+          { field: { Name: "category_c" } },
+          { field: { Name: "available_c" } },
+          { field: { Name: "description_c" } }
+        ],
+        orderBy: [
+          {
+            fieldName: "Name",
+            sorttype: "ASC"
+          }
+        ]
+      };
+
+      const response = await apperClient.fetchRecords('menu_item_c', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        return [];
+      }
+
+      if (!response.data || response.data.length === 0) {
+        return [];
+      }
+
+      return response.data;
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error fetching menu items:", error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      return [];
+    }
   },
 
   async getById(id) {
-    await new Promise(resolve => setTimeout(resolve, 200));
-    const item = menuItems.find(item => item.Id === parseInt(id));
-    return item ? { ...item } : null;
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "price_c" } },
+          { field: { Name: "category_c" } },
+          { field: { Name: "available_c" } },
+          { field: { Name: "description_c" } }
+        ]
+      };
+
+      const response = await apperClient.getRecordById('menu_item_c', id, params);
+
+      if (!response || !response.data) {
+        return null;
+      }
+
+      return response.data;
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error(`Error fetching menu item with ID ${id}:`, error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      return null;
+    }
   },
 
   async getByCategory(category) {
-    await new Promise(resolve => setTimeout(resolve, 250));
-    return menuItems.filter(item => item.category === category).map(item => ({ ...item }));
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "price_c" } },
+          { field: { Name: "category_c" } },
+          { field: { Name: "available_c" } },
+          { field: { Name: "description_c" } }
+        ],
+        where: [
+          {
+            FieldName: "category_c",
+            Operator: "EqualTo",
+            Values: [category]
+          }
+        ],
+        orderBy: [
+          {
+            fieldName: "Name",
+            sorttype: "ASC"
+          }
+        ]
+      };
+
+      const response = await apperClient.fetchRecords('menu_item_c', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        return [];
+      }
+
+      if (!response.data || response.data.length === 0) {
+        return [];
+      }
+
+      return response.data;
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error fetching menu items by category:", error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      return [];
+    }
   },
 
   async updateAvailability(id, available) {
-    await new Promise(resolve => setTimeout(resolve, 250));
-    const itemIndex = menuItems.findIndex(item => item.Id === parseInt(id));
-    if (itemIndex !== -1) {
-      menuItems[itemIndex] = { ...menuItems[itemIndex], available };
-      return { ...menuItems[itemIndex] };
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const params = {
+        records: [
+          {
+            Id: parseInt(id),
+            available_c: available
+          }
+        ]
+      };
+
+      const response = await apperClient.updateRecord('menu_item_c', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        return null;
+      }
+
+      if (response.results) {
+        const failedUpdates = response.results.filter(result => !result.success);
+        
+        if (failedUpdates.length > 0) {
+          console.error(`Failed to update menu item ${failedUpdates.length} records:${JSON.stringify(failedUpdates)}`);
+          return null;
+        }
+
+        const successfulUpdates = response.results.filter(result => result.success);
+        return successfulUpdates.length > 0 ? successfulUpdates[0].data : null;
+      }
+
+      return null;
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error updating menu item availability:", error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      return null;
     }
-    return null;
   },
 
   async create(itemData) {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    const maxId = Math.max(...menuItems.map(item => item.Id), 0);
-    const newItem = {
-      Id: maxId + 1,
-      ...itemData
-    };
-    menuItems.push(newItem);
-    return { ...newItem };
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const params = {
+        records: [
+          {
+            Name: itemData.Name,
+            price_c: parseFloat(itemData.price_c),
+            category_c: itemData.category_c,
+            available_c: itemData.available_c !== undefined ? itemData.available_c : true,
+            description_c: itemData.description_c || ''
+          }
+        ]
+      };
+
+      const response = await apperClient.createRecord('menu_item_c', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        return null;
+      }
+
+      if (response.results) {
+        const failedRecords = response.results.filter(result => !result.success);
+        
+        if (failedRecords.length > 0) {
+          console.error(`Failed to create menu item ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
+          return null;
+        }
+
+        const successfulRecords = response.results.filter(result => result.success);
+        return successfulRecords.length > 0 ? successfulRecords[0].data : null;
+      }
+
+      return null;
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error creating menu item:", error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      return null;
+    }
   },
 
   async update(id, itemData) {
-    await new Promise(resolve => setTimeout(resolve, 250));
-    const itemIndex = menuItems.findIndex(item => item.Id === parseInt(id));
-    if (itemIndex !== -1) {
-      menuItems[itemIndex] = { ...menuItems[itemIndex], ...itemData };
-      return { ...menuItems[itemIndex] };
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const params = {
+        records: [
+          {
+            Id: parseInt(id),
+            Name: itemData.Name,
+            price_c: parseFloat(itemData.price_c),
+            category_c: itemData.category_c,
+            available_c: itemData.available_c,
+            description_c: itemData.description_c || ''
+          }
+        ]
+      };
+
+      const response = await apperClient.updateRecord('menu_item_c', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        return null;
+      }
+
+      if (response.results) {
+        const failedUpdates = response.results.filter(result => !result.success);
+        
+        if (failedUpdates.length > 0) {
+          console.error(`Failed to update menu item ${failedUpdates.length} records:${JSON.stringify(failedUpdates)}`);
+          return null;
+        }
+
+        const successfulUpdates = response.results.filter(result => result.success);
+        return successfulUpdates.length > 0 ? successfulUpdates[0].data : null;
+      }
+
+      return null;
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error updating menu item:", error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      return null;
     }
-    return null;
   },
 
   async delete(id) {
-    await new Promise(resolve => setTimeout(resolve, 200));
-    const itemIndex = menuItems.findIndex(item => item.Id === parseInt(id));
-    if (itemIndex !== -1) {
-      const deletedItem = menuItems.splice(itemIndex, 1)[0];
-      return { ...deletedItem };
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const params = {
+        RecordIds: [parseInt(id)]
+      };
+
+      const response = await apperClient.deleteRecord('menu_item_c', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        return null;
+      }
+
+      if (response.results) {
+        const failedDeletions = response.results.filter(result => !result.success);
+        
+        if (failedDeletions.length > 0) {
+          console.error(`Failed to delete menu item ${failedDeletions.length} records:${JSON.stringify(failedDeletions)}`);
+          return null;
+        }
+
+        return response.results.length > 0;
+      }
+
+      return null;
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error deleting menu item:", error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      return null;
     }
-    return null;
   },
 
   async getCategories() {
-    await new Promise(resolve => setTimeout(resolve, 200));
-    const categories = [...new Set(menuItems.map(item => item.category))];
-    return categories.sort();
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const params = {
+        fields: [
+          { field: { Name: "category_c" } }
+        ]
+      };
+
+      const response = await apperClient.fetchRecords('menu_item_c', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        return [];
+      }
+
+      if (!response.data || response.data.length === 0) {
+        return [];
+      }
+
+      const categories = [...new Set(response.data.map(item => item.category_c))];
+      return categories.filter(cat => cat).sort();
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error fetching categories:", error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      return [];
+    }
   }
 };
 
