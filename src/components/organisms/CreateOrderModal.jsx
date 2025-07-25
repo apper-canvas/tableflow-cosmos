@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { toast } from 'react-toastify';
-import ApperIcon from '@/components/ApperIcon';
-import Button from '@/components/atoms/Button';
-import orderService from '@/services/api/orderService';
-import menuService from '@/services/api/menuService';
-import tableService from '@/services/api/tableService';
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "react-toastify";
+import tableService from "@/services/api/tableService";
+import orderService from "@/services/api/orderService";
+import menuService from "@/services/api/menuService";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
 
 export default function CreateOrderModal({ isOpen, onClose, onOrderCreated }) {
   const [currentStep, setCurrentStep] = useState(1);
@@ -281,24 +281,48 @@ export default function CreateOrderModal({ isOpen, onClose, onOrderCreated }) {
                     </div>
 
                     {/* Menu Items Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {filteredMenuItems.map(item => (
-                        <div key={item.Id} className="border border-gray-200 rounded-lg p-4">
-                          <div className="flex justify-between items-start mb-2">
-                            <h3 className="font-medium text-gray-900">{item.name}</h3>
-                            <span className="text-lg font-semibold text-primary">${item.price}</span>
-                          </div>
-                          <p className="text-sm text-gray-600 mb-3">{item.description}</p>
-                          <Button
-                            onClick={() => addItemToOrder(item)}
-                            className="w-full bg-primary hover:bg-primary/90 text-white"
-                            size="sm"
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {filteredMenuItems.map(item => {
+                        const isSelected = formData.items.some(orderItem => orderItem.Id === item.Id);
+                        const selectedQuantity = formData.items.find(orderItem => orderItem.Id === item.Id)?.quantity || 0;
+                        
+                        return (
+                          <div 
+                            key={item.Id} 
+                            className={`border rounded-lg p-4 transition-all ${
+                              isSelected 
+                                ? 'border-primary bg-primary/5 shadow-md' 
+                                : 'border-gray-200 hover:border-gray-300'
+                            }`}
                           >
-                            <ApperIcon name="Plus" size={14} />
-                            Add to Order
-                          </Button>
-                        </div>
-                      ))}
+                            <div className="flex justify-between items-start mb-2">
+                              <div className="flex items-center gap-2">
+                                <h3 className="font-medium text-gray-900">{item.name}</h3>
+                                {isSelected && (
+                                  <div className="bg-primary text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
+                                    <ApperIcon name="Check" size={12} />
+                                    {selectedQuantity}
+                                  </div>
+                                )}
+                              </div>
+                              <span className="text-lg font-semibold text-primary">${item.price}</span>
+                            </div>
+                            <p className="text-sm text-gray-600 mb-3">{item.description}</p>
+                            <Button
+                              onClick={() => addItemToOrder(item)}
+                              className={`w-full ${
+                                isSelected 
+                                  ? 'bg-success hover:bg-success/90 text-white' 
+                                  : 'bg-primary hover:bg-primary/90 text-white'
+                              }`}
+                              size="sm"
+                            >
+                              <ApperIcon name="Plus" size={14} />
+                              {isSelected ? 'Add More' : 'Add to Order'}
+                            </Button>
+                          </div>
+                        );
+                      })}
                     </div>
 
                     {/* Selected Items */}
@@ -368,15 +392,25 @@ export default function CreateOrderModal({ isOpen, onClose, onOrderCreated }) {
                       </div>
                     </div>
 
-                    <div className="space-y-4">
+<div className="space-y-4">
                       <h4 className="font-medium text-gray-900">Order Items</h4>
                       {formData.items.map(item => (
-                        <div key={item.Id} className="flex justify-between items-center py-2">
-                          <div>
-                            <span className="font-medium">{item.name}</span>
+                        <div key={item.Id} className="flex justify-between items-center py-3 px-3 bg-gray-50 rounded-lg">
+                          <div className="flex-1">
+                            <span className="font-medium text-gray-900">{item.name}</span>
                             <span className="text-gray-500 ml-2">x{item.quantity}</span>
                           </div>
-                          <span className="font-medium">${(item.price * item.quantity).toFixed(2)}</span>
+                          <div className="flex items-center gap-3">
+                            <span className="font-medium text-gray-900">${(item.price * item.quantity).toFixed(2)}</span>
+                            <Button
+                              onClick={() => removeItemFromOrder(item.Id)}
+                              variant="ghost"
+                              size="sm"
+                              className="text-error hover:text-error hover:bg-error/10 p-1 h-8 w-8"
+                            >
+                              <ApperIcon name="X" size={16} />
+                            </Button>
+                          </div>
                         </div>
                       ))}
                     </div>
