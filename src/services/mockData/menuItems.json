@@ -1,0 +1,154 @@
+[
+  {
+    "Id": 1,
+    "name": "Grilled Salmon",
+    "price": 28.99,
+    "category": "Main Course",
+    "available": true,
+    "description": "Fresh Atlantic salmon grilled to perfection with lemon herb butter"
+  },
+  {
+    "Id": 2,
+    "name": "Ribeye Steak",
+    "price": 34.99,
+    "category": "Main Course",
+    "available": true,
+    "description": "Prime cut ribeye steak cooked to your preference"
+  },
+  {
+    "Id": 3,
+    "name": "Margherita Pizza",
+    "price": 18.99,
+    "category": "Main Course",
+    "available": true,
+    "description": "Classic pizza with fresh mozzarella, tomatoes, and basil"
+  },
+  {
+    "Id": 4,
+    "name": "Chicken Parmesan",
+    "price": 24.99,
+    "category": "Main Course",
+    "available": true,
+    "description": "Breaded chicken breast with marinara sauce and melted mozzarella"
+  },
+  {
+    "Id": 5,
+    "name": "Fish & Chips",
+    "price": 22.99,
+    "category": "Main Course",
+    "available": false,
+    "description": "Beer-battered cod with crispy fries and tartar sauce"
+  },
+  {
+    "Id": 6,
+    "name": "Sushi Platter",
+    "price": 42.99,
+    "category": "Main Course",
+    "available": true,
+    "description": "Assorted fresh sushi and sashimi with wasabi and ginger"
+  },
+  {
+    "Id": 7,
+    "name": "Caesar Salad",
+    "price": 12.99,
+    "category": "Salads",
+    "available": true,
+    "description": "Crisp romaine lettuce with parmesan cheese and croutons"
+  },
+  {
+    "Id": 8,
+    "name": "Arugula Salad",
+    "price": 11.99,
+    "category": "Salads",
+    "available": true,
+    "description": "Fresh arugula with cherry tomatoes and balsamic vinaigrette"
+  },
+  {
+    "Id": 9,
+    "name": "House Salad",
+    "price": 9.99,
+    "category": "Salads",
+    "available": true,
+    "description": "Mixed greens with seasonal vegetables and house dressing"
+  },
+  {
+    "Id": 10,
+    "name": "Lobster Bisque",
+    "price": 14.99,
+    "category": "Appetizers",
+    "available": true,
+    "description": "Rich and creamy lobster soup with sherry"
+  },
+  {
+    "Id": 11,
+    "name": "Miso Soup",
+    "price": 5.99,
+    "category": "Appetizers",
+    "available": true,
+    "description": "Traditional Japanese soup with tofu and seaweed"
+  },
+  {
+    "Id": 12,
+    "name": "Garlic Bread",
+    "price": 6.99,
+    "category": "Appetizers",
+    "available": true,
+    "description": "Toasted bread with garlic butter and herbs"
+  },
+  {
+    "Id": 13,
+    "name": "Red Wine",
+    "price": 45.99,
+    "category": "Beverages",
+    "available": true,
+    "description": "Premium red wine selection"
+  },
+  {
+    "Id": 14,
+    "name": "Craft Beer",
+    "price": 7.99,
+    "category": "Beverages",
+    "available": true,
+    "description": "Local brewery selection"
+  },
+  {
+    "Id": 15,
+    "name": "Sparkling Water",
+    "price": 4.99,
+    "category": "Beverages",
+    "available": true,
+    "description": "Premium sparkling mineral water"
+  },
+  {
+    "Id": 16,
+    "name": "Green Tea",
+    "price": 3.99,
+    "category": "Beverages",
+    "available": true,
+    "description": "Traditional Japanese green tea"
+  },
+  {
+    "Id": 17,
+    "name": "Chocolate Lava Cake",
+    "price": 8.99,
+    "category": "Desserts",
+    "available": true,
+    "description": "Warm chocolate cake with molten center and vanilla ice cream"
+  },
+  {
+    "Id": 18,
+    "name": "Tiramisu",
+    "price": 7.99,
+    "category": "Desserts",
+    "available": true,
+    "description": "Classic Italian dessert with mascarpone and coffee"
+  },
+  {
+    "Id": 19,
+    "name": "Cheesecake",
+    "price": 6.99,
+    "category": "Desserts",
+    "available": false,
+    "description": "New York style cheesecake with berry compote"
+  }
+]

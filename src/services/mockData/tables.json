@@ -1,0 +1,130 @@
+[
+  {
+    "Id": 1,
+    "number": "T-01",
+    "capacity": 2,
+    "status": "available",
+    "currentPartySize": 0,
+    "reservationTime": null
+  },
+  {
+    "Id": 2,
+    "number": "T-02",
+    "capacity": 4,
+    "status": "available",
+    "currentPartySize": 0,
+    "reservationTime": null
+  },
+  {
+    "Id": 3,
+    "number": "T-03",
+    "capacity": 4,
+    "status": "occupied",
+    "currentPartySize": 3,
+    "reservationTime": "2024-01-15T19:00:00Z"
+  },
+  {
+    "Id": 4,
+    "number": "T-04",
+    "capacity": 2,
+    "status": "available",
+    "currentPartySize": 0,
+    "reservationTime": null
+  },
+  {
+    "Id": 5,
+    "number": "T-05",
+    "capacity": 6,
+    "status": "occupied",
+    "currentPartySize": 4,
+    "reservationTime": "2024-01-15T18:30:00Z"
+  },
+  {
+    "Id": 6,
+    "number": "T-06",
+    "capacity": 2,
+    "status": "reserved",
+    "currentPartySize": 0,
+    "reservationTime": "2024-01-15T20:00:00Z"
+  },
+  {
+    "Id": 7,
+    "number": "T-07",
+    "capacity": 4,
+    "status": "occupied",
+    "currentPartySize": 2,
+    "reservationTime": "2024-01-15T17:30:00Z"
+  },
+  {
+    "Id": 8,
+    "number": "T-08",
+    "capacity": 4,
+    "status": "occupied",
+    "currentPartySize": 3,
+    "reservationTime": "2024-01-15T19:00:00Z"
+  },
+  {
+    "Id": 9,
+    "number": "T-09",
+    "capacity": 2,
+    "status": "available",
+    "currentPartySize": 0,
+    "reservationTime": null
+  },
+  {
+    "Id": 10,
+    "number": "T-10",
+    "capacity": 8,
+    "status": "reserved",
+    "currentPartySize": 0,
+    "reservationTime": "2024-01-15T20:30:00Z"
+  },
+  {
+    "Id": 11,
+    "number": "T-11",
+    "capacity": 4,
+    "status": "available",
+    "currentPartySize": 0,
+    "reservationTime": null
+  },
+  {
+    "Id": 12,
+    "number": "T-12",
+    "capacity": 6,
+    "status": "occupied",
+    "currentPartySize": 5,
+    "reservationTime": "2024-01-15T18:45:00Z"
+  },
+  {
+    "Id": 13,
+    "number": "T-13",
+    "capacity": 2,
+    "status": "available",
+    "currentPartySize": 0,
+    "reservationTime": null
+  },
+  {
+    "Id": 14,
+    "number": "T-14",
+    "capacity": 4,
+    "status": "cleaning",
+    "currentPartySize": 0,
+    "reservationTime": null
+  },
+  {
+    "Id": 15,
+    "number": "T-15",
+    "capacity": 4,
+    "status": "occupied",
+    "currentPartySize": 4,
+    "reservationTime": "2024-01-15T19:20:00Z"
+  },
+  {
+    "Id": 16,
+    "number": "T-16",
+    "capacity": 2,
+    "status": "available",
+    "currentPartySize": 0,
+    "reservationTime": null
+  }
+]
