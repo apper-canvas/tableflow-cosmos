@@ -36,10 +36,12 @@ const tableService = {
     await new Promise(resolve => setTimeout(resolve, 250));
     return tables.filter(table => table.status === status).map(table => ({ ...table }));
   },
-
-  async getAvailableTables() {
+async getAvailableTables() {
     await new Promise(resolve => setTimeout(resolve, 200));
-    return tables.filter(table => table.status === "available").map(table => ({ ...table }));
+    // Return only tables that are available for new orders (exclude occupied, reserved, cleaning)
+    return tables.filter(table => 
+      table.status === "available" && table.status !== "occupied"
+    ).map(table => ({ ...table }));
   },
 
   async reserveTable(id, reservationTime, partySize) {
