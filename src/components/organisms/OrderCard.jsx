@@ -58,10 +58,10 @@ const OrderCard = ({ order, onStatusUpdate }) => {
         </div>
       </div>
 
-      <div className="mb-4">
+<div className="mb-4">
         <p className="text-sm text-gray-600 mb-2 font-medium">{order.customerName}</p>
         <div className="space-y-1">
-{order.items.slice(0, 3).map((item, index) => (
+          {(order.items || []).slice(0, 3).map((item, index) => (
             <div key={index} className="flex justify-between text-sm">
               <span className="text-gray-700">
                 {item.quantity}x {item.name}
@@ -71,9 +71,9 @@ const OrderCard = ({ order, onStatusUpdate }) => {
               </span>
             </div>
           ))}
-          {order.items.length > 3 && (
+          {(order.items || []).length > 3 && (
             <p className="text-sm text-gray-500 italic">
-              +{order.items.length - 3} more items...
+              +{(order.items || []).length - 3} more items...
             </p>
           )}
         </div>
