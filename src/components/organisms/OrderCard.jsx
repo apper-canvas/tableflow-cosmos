@@ -84,10 +84,12 @@ const OrderCard = ({ order, onStatusUpdate }) => {
           <span className="text-lg font-bold text-gray-900">
             ${(order.total || 0).toFixed(2)}
           </span>
-          <div className="flex items-center space-x-2 text-sm text-gray-600 bg-gray-50 rounded-md px-2 py-1">
+<div className="flex items-center space-x-2 text-sm text-gray-600 bg-gray-50 rounded-md px-2 py-1">
             <ApperIcon name="Clock" className="w-4 h-4" />
             <span className="font-medium">
-              {formatDistanceToNow(new Date(order.timestamp), { addSuffix: true })}
+              {order.timestamp && !isNaN(new Date(order.timestamp)) 
+                ? formatDistanceToNow(new Date(order.timestamp), { addSuffix: true })
+                : 'Time not available'}
             </span>
           </div>
         </div>

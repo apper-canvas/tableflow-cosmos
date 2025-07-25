@@ -85,11 +85,13 @@ const TableCard = ({ table, onStatusUpdate }) => {
           {table.currentPartySize > 0 && (
             <p className="text-sm font-medium text-gray-700">
               Party of {table.currentPartySize}
-            </p>
+</p>
           )}
           {table.reservationTime && (
             <p className="text-xs text-gray-500">
-              {formatDistanceToNow(new Date(table.reservationTime), { addSuffix: true })}
+              {!isNaN(new Date(table.reservationTime))
+                ? formatDistanceToNow(new Date(table.reservationTime), { addSuffix: true })
+                : 'Time not available'}
             </p>
           )}
         </div>
