@@ -297,5 +297,3 @@ const tableService = {
 };
 
 export default tableService;
-
-export default tableService;
