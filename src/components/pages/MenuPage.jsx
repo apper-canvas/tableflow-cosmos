@@ -4,10 +4,12 @@ import { toast } from "react-toastify";
 import menuService from "@/services/api/menuService";
 import SearchBar from "@/components/molecules/SearchBar";
 import MenuItemCard from "@/components/organisms/MenuItemCard";
+import MenuItemModal from "@/components/organisms/MenuItemModal";
 import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
 import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
 
 const MenuPage = () => {
   const [menuItems, setMenuItems] = useState([]);
@@ -17,7 +19,9 @@ const MenuPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [availabilityFilter, setAvailabilityFilter] = useState("all");
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null);
   const loadMenuData = async () => {
     try {
       setLoading(true);
@@ -52,6 +56,51 @@ const MenuPage = () => {
     } catch (err) {
       toast.error("Failed to update item availability");
       console.error("Error updating availability:", err);
+    }
+  };
+
+const handleCreate = async (itemData) => {
+    try {
+      const newItem = await menuService.create(itemData);
+      setMenuItems(prev => [...prev, newItem]);
+      toast.success("Menu item created successfully!");
+      setIsModalOpen(false);
+    } catch (error) {
+      toast.error("Failed to create menu item");
+    }
+  };
+
+  const handleEdit = (item) => {
+    setEditingItem(item);
+    setIsModalOpen(true);
+  };
+
+  const handleUpdate = async (itemData) => {
+    try {
+      const updatedItem = await menuService.update(editingItem.Id, itemData);
+      setMenuItems(prev => prev.map(item => 
+        item.Id === editingItem.Id ? updatedItem : item
+      ));
+      toast.success("Menu item updated successfully!");
+      setIsModalOpen(false);
+      setEditingItem(null);
+    } catch (error) {
+      toast.error("Failed to update menu item");
+    }
+  };
+
+  const handleDelete = (itemId) => {
+    setDeleteConfirmId(itemId);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await menuService.delete(deleteConfirmId);
+      setMenuItems(prev => prev.filter(item => item.Id !== deleteConfirmId));
+      toast.success("Menu item deleted successfully!");
+      setDeleteConfirmId(null);
+    } catch (error) {
+      toast.error("Failed to delete menu item");
     }
   };
 
@@ -103,12 +152,21 @@ const MenuPage = () => {
             </p>
           </div>
           
-          <SearchBar
-            placeholder="Search menu items..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full lg:w-80"
-          />
+<div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+            <SearchBar
+              placeholder="Search menu items..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full lg:w-80"
+            />
+            <Button
+              onClick={() => setIsModalOpen(true)}
+              className="flex items-center gap-2 whitespace-nowrap"
+            >
+              <ApperIcon name="Plus" size={16} />
+              Add Item
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -190,14 +248,63 @@ const MenuPage = () => {
           layout
           className="space-y-4"
         >
-          {filteredItems.map((item) => (
+{filteredItems.map((item) => (
             <MenuItemCard
               key={item.Id}
               item={item}
               onToggleAvailability={handleToggleAvailability}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
             />
           ))}
         </motion.div>
+)}
+
+      {/* Create/Edit Modal */}
+      <MenuItemModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingItem(null);
+        }}
+        onSubmit={editingItem ? handleUpdate : handleCreate}
+        item={editingItem}
+        categories={categories}
+      />
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirmId && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-lg p-6 max-w-md w-full"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                <ApperIcon name="Trash2" className="w-5 h-5 text-red-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Delete Menu Item</h3>
+                <p className="text-sm text-gray-600">This action cannot be undone.</p>
+              </div>
+            </div>
+            <div className="flex gap-3 justify-end">
+              <Button
+                variant="outline"
+                onClick={() => setDeleteConfirmId(null)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={confirmDelete}
+              >
+                Delete
+              </Button>
+            </div>
+          </motion.div>
+        </div>
       )}
     </div>
   );

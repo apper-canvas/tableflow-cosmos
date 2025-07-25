@@ -4,7 +4,7 @@ import ApperIcon from "@/components/ApperIcon";
 import StatusBadge from "@/components/molecules/StatusBadge";
 import Button from "@/components/atoms/Button";
 
-const MenuItemCard = ({ item, onToggleAvailability }) => {
+const MenuItemCard = ({ item, onToggleAvailability, onEdit, onDelete }) => {
   const handleToggleAvailability = () => {
     if (onToggleAvailability) {
       onToggleAvailability(item.Id, !item.available);
@@ -40,23 +40,45 @@ const MenuItemCard = ({ item, onToggleAvailability }) => {
           </div>
         </div>
 
-        <div className="flex flex-col items-end space-y-3 ml-6">
+<div className="flex flex-col items-end space-y-3 ml-6">
           <span className="text-xl font-bold text-gray-900">
             ${item.price.toFixed(2)}
           </span>
           
-          <Button
-            onClick={handleToggleAvailability}
-            variant={item.available ? "outline" : "secondary"}
-            size="sm"
-            className="text-sm"
-          >
-            <ApperIcon 
-              name={item.available ? "EyeOff" : "Eye"} 
-              className="w-4 h-4 mr-2" 
-            />
-            {item.available ? "Disable" : "Enable"}
-          </Button>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-2">
+              <Button
+                onClick={() => onEdit(item)}
+                variant="outline"
+                size="sm"
+                className="text-sm"
+              >
+                <ApperIcon name="Edit" className="w-4 h-4 mr-1" />
+                Edit
+              </Button>
+              <Button
+                onClick={() => onDelete(item.Id)}
+                variant="outline"
+                size="sm"
+                className="text-sm text-red-600 hover:text-red-700 hover:bg-red-50"
+              >
+                <ApperIcon name="Trash2" className="w-4 h-4 mr-1" />
+                Delete
+              </Button>
+            </div>
+            <Button
+              onClick={handleToggleAvailability}
+              variant={item.available ? "outline" : "secondary"}
+              size="sm"
+              className="text-sm"
+            >
+              <ApperIcon 
+                name={item.available ? "EyeOff" : "Eye"} 
+                className="w-4 h-4 mr-2" 
+              />
+              {item.available ? "Disable" : "Enable"}
+            </Button>
+          </div>
         </div>
       </div>
     </motion.div>
