@@ -24,13 +24,19 @@ const orderService = {
     return null;
   },
 
-  async create(orderData) {
+async create(orderData) {
     await new Promise(resolve => setTimeout(resolve, 300));
     const maxId = Math.max(...orders.map(order => order.Id), 0);
     const newOrder = {
       Id: maxId + 1,
-      ...orderData,
-      timestamp: new Date().toISOString()
+      orderNumber: orderData.orderNumber || `ORD-${Date.now().toString().slice(-6)}`,
+      customerName: orderData.customerName,
+      tableNumber: orderData.tableNumber,
+      items: orderData.items || [],
+      totalAmount: orderData.totalAmount || 0,
+      status: orderData.status || 'new',
+      notes: orderData.notes || '',
+      timestamp: orderData.timestamp || new Date().toISOString()
     };
     orders.push(newOrder);
     return { ...newOrder };
