@@ -57,13 +57,13 @@ const OrderCard = ({ order, onStatusUpdate }) => {
       <div className="mb-4">
         <p className="text-sm text-gray-600 mb-2 font-medium">{order.customerName}</p>
         <div className="space-y-1">
-          {order.items.slice(0, 3).map((item, index) => (
+{order.items.slice(0, 3).map((item, index) => (
             <div key={index} className="flex justify-between text-sm">
               <span className="text-gray-700">
                 {item.quantity}x {item.name}
               </span>
               <span className="text-gray-600 font-medium">
-                ${(item.price * item.quantity).toFixed(2)}
+                ${((item.price || 0) * (item.quantity || 0)).toFixed(2)}
               </span>
             </div>
           ))}
@@ -77,8 +77,8 @@ const OrderCard = ({ order, onStatusUpdate }) => {
 
       <div className="flex items-center justify-between">
         <div className="flex flex-col space-y-1">
-          <span className="text-lg font-bold text-gray-900">
-            ${order.total.toFixed(2)}
+<span className="text-lg font-bold text-gray-900">
+            ${(order.total || 0).toFixed(2)}
           </span>
           <span className="text-xs text-gray-500">
             {formatDistanceToNow(new Date(order.timestamp), { addSuffix: true })}
